@@ -6,5 +6,3 @@ add action=add-src-to-address-list address-list="port scanners" address-list-tim
 add action=add-src-to-address-list address-list="port scanners" address-list-timeout=2w chain=input in-interface=ether1 protocol=tcp tcp-flags=fin,psh,urg,!syn,!rst,!ack
 add action=add-src-to-address-list address-list="port scanners" address-list-timeout=2w chain=input in-interface=ether1 protocol=tcp tcp-flags=fin,syn,rst,psh,ack,urg
 add action=add-src-to-address-list address-list="port scanners" address-list-timeout=2w chain=input in-interface=ether1 protocol=tcp tcp-flags=!fin,!syn,!rst,!psh,!ack,!urg
-
-Создает правило блокирующее ip адрес любителей сканировать порты.
