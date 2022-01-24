@@ -1,0 +1,52 @@
+/system scheduler
+add interval=30s name=Telegram on-event=":tool fetch url=(\"https://api.telegr\
+    am.org/\".\$botID.\"/getUpdates\") ;\r\
+    \n:global content [/file get [/file find name=getUpdates] contents] ;\r\
+    \n:global startLoc 0;\r\
+    \n:global endLoc 0;\r\
+    \n\r\
+    \n:if ( [/file get [/file find name=getUpdates] size] > 50 ) do={\r\
+    \n\r\
+    \n:set startLoc  [:find \$content \"update_id\" \$lastEnd ] ;\r\
+    \n:set startLoc ( \$startLoc + 11 ) ;\r\
+    \n:local endLoc [:find \$content \",\" \$startLoc] ;\r\
+    \n:local messageId ([:pick \$content \$startLoc \$endLoc] + (1));\r\
+    \n:put [\$messageId] ;\r\
+    \n:#log info message=\"updateID \$messageId\" ;\r\
+    \n\r\
+    \n:set startLoc  [:find \$content \"text\" \$lastEnd ] ;\r\
+    \n:set startLoc ( \$startLoc  + 7 ) ;\r\
+    \n:local endLoc [:find \$content \",\" (\$startLoc)] ;\r\
+    \n:set endLoc ( \$endLoc - 1 ) ;\r\
+    \n:local message [:pick \$content (\$startLoc + 1) \$endLoc] ;\r\
+    \n:put [\$message] ;\r\
+    \n:#log info message=\"message \$message \";\r\
+    \n\r\
+    \n:set startLoc  [:find \$content \"chat\" \$lastEnd ] ;\r\
+    \n:set startLoc ( \$startLoc + 12 ) ;\r\
+    \n:local endLoc [:find \$content \",\" \$startLoc] ;\r\
+    \n:local chatId ([:pick \$content \$startLoc \$endLoc]);\r\
+    \n:put [\$chatId] ;\r\
+    \n:#log info message=\"chatID \$chatId \";\r\
+    \n\r\
+    \n:if ((\$chatId = \$myChatID) and (:put [/system script find name=\$messa\
+    ge] != \"\")) do={\r\
+    \n:system script run \$message} else={:tool fetch url=(\"https://api.teleg\
+    ram.org/\".\$botID.\"/sendmessage\\\?chat_id=\".\$chatId.\"&text=I can't t\
+    alk with you. \") keep-result=no} ;\r\
+    \n:tool fetch url=(\"https://api.telegram.org/\".\$botID.\"/getUpdates\\\?\
+    offset=\$messageId\") keep-result=no; \r\
+    \n} \r\
+    \n" policy=\
+    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
+    start-date=nov/02/2010 start-time=00:00:00
+	
+add name=Telegram-startup on-event=":delay 5\r\
+    \n:global botID \"bot78395****:AAGae-XAqeDPR*******sa2EdBoW8Z4Tk0\" ;\r\
+    \n:global myChatID \"228****05\" ;\r\
+    \n:global startLoc 0;\r\
+    \n:global endLoc 0;\r\
+    \n:tool fetch url=(\"https://api.telegram.org/\".\$botID.\"/getUpdates\") \
+    ;" policy=\
+    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
+    start-time=startup
