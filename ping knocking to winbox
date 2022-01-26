@@ -1,6 +1,6 @@
 /ip firewall filter
 add action=accept chain=input comment="Access winbox list WAN" dst-address=*ВАШ IP АДРЕС* dst-port=8291 in-interface=ether1 protocol=tcp src-address-list=winbox
 add action=add-src-to-address-list address-list=Winbox_Wan address-list-timeout=1h chain=input in-interface=ether1 packet-size=48 protocol=icmp src-address-list=ICMP_SSH_48_stage1
-add action=add-src-to-address-list address-list=ICMP_SSH_48_stage1 address-list-timeout=1m chain=input in-interface=ether1 packet-size=48 protocol=icmp src-address-list=ICMP_SSH_98_stage2
-add action=add-src-to-address-list address-list=ICMP_SSH_38_stage2 address-list-timeout=1m chain=input in-interface=ether1 packet-size=38 protocol=icmp src-address-list=ICMP_SSH_98_stage1
+add action=add-src-to-address-list address-list=ICMP_SSH_48_stage1 address-list-timeout=1m chain=input in-interface=ether1 packet-size=48 protocol=icmp src-address-list=ICMP_SSH_38_stage2
+add action=add-src-to-address-list address-list=ICMP_SSH_38_stage2 address-list-timeout=1m chain=input in-interface=ether1 packet-size=38 protocol=icmp src-address-list=ICMP_SSH_38_stage1
 add action=add-src-to-address-list address-list=ICMP_SSH_38_stage1 address-list-timeout=1m chain=input in-interface=ether1 packet-size=38 protocol=icmp
